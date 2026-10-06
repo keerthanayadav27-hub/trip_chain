@@ -38,6 +38,8 @@ import { TripCreationModal } from './components/TripCreationModal';
 import { VersionDiffModal } from './components/VersionDiffModal';
 import { BlockExplorerModal } from './components/BlockExplorerModal';
 import FAQSection from './components/FAQSection';
+import { DemoGuideBanner } from './components/DemoGuideBanner';
+import { SmartContractViewerModal } from './components/SmartContractViewerModal';
 
 export const App: React.FC = () => {
   // Application State
@@ -76,6 +78,7 @@ export const App: React.FC = () => {
     isOpen: boolean;
     txHash?: string;
   }>({ isOpen: false });
+  const [isContractModalOpen, setIsContractModalOpen] = useState(false);
 
   // Floating Toast Notification
   const [toastMessage, setToastMessage] = useState<{
@@ -291,6 +294,29 @@ export const App: React.FC = () => {
     const modifiedTrip = { ...trip, days: updatedDays };
 
     proposeChanges(modifiedTrip, `Removed "${actToDelete?.title || 'activity'}" from Day ${dayNumber}`);
+  };
+
+  // Quick 1-click Propose Sample Edit for Demo Flow
+  const handleQuickProposeSample = () => {
+    if (!trip) return;
+    const updatedDays = trip.days.map(d => {
+      if (d.dayNumber === 2 && d.activities.length > 0) {
+        const updatedActs = [...d.activities];
+        updatedActs[updatedActs.length - 1] = {
+          ...updatedActs[updatedActs.length - 1],
+          title: 'Evening Omoide Yokocho Izakaya Crawl & Yakitori',
+          location: 'Memory Lane, Shinjuku',
+          category: 'Food',
+          estimatedCost: 35,
+          highlight: 'Charcoal grilled skewers in cozy historic alleyway'
+        };
+        return { ...d, activities: updatedActs };
+      }
+      return d;
+    });
+
+    const modifiedTrip = { ...trip, days: updatedDays };
+    proposeChanges(modifiedTrip, 'Optimized Day 2 evening with local Izakaya tasting & reduced expense');
   };
 
   // Open EIP-712 Signature Modal for current active member
@@ -568,6 +594,15 @@ export const App: React.FC = () => {
       {/* Main Container */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         
+        {/* Hackathon Evaluation Checklist & Guided Demo */}
+        <DemoGuideBanner
+          versionCount={versionHistory.length}
+          activeProposal={activeProposal}
+          onQuickPropose={handleQuickProposeSample}
+          onOpenDiffModal={() => setDiffModalState({ isOpen: true })}
+          onOpenContractModal={() => setIsContractModalOpen(true)}
+        />
+
         {/* Hero Section */}
         <TripHero
           trip={trip}
@@ -713,6 +748,11 @@ export const App: React.FC = () => {
         txHash={explorerModalState.txHash}
         onChainRecord={onChainRecord}
         version={latestVersion}
+      />
+
+      <SmartContractViewerModal
+        isOpen={isContractModalOpen}
+        onClose={() => setIsContractModalOpen(false)}
       />
 
     </div>

@@ -775,8 +775,8 @@ function generateProceduralDays(
  * Main AI Itinerary Generator function
  */
 export async function generateFullItinerary(params: GenerationParams): Promise<Trip> {
-  // Simulate realistic AI thought and compilation latency (800ms)
-  await new Promise(r => setTimeout(r, 800));
+  // Simulate realistic AI thought and compilation latency (200ms)
+  await new Promise(r => setTimeout(r, 200));
 
   const destKey = params.destination.trim().toLowerCase();
   const matched = DESTINATION_DATABASE[destKey];
@@ -839,7 +839,7 @@ export async function regenerateSingleDay(
   customInstructions?: string
 ): Promise<DayPlan> {
   // Simulate AI generation delay
-  await new Promise(r => setTimeout(r, 650));
+  await new Promise(r => setTimeout(r, 150));
 
   const existingDay = trip.days.find(d => d.dayNumber === dayNumber);
   const dateStr = existingDay?.date || `Day ${dayNumber}`;

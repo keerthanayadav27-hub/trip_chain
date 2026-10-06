@@ -37,6 +37,7 @@ import { ActivityEditModal } from './components/ActivityEditModal';
 import { TripCreationModal } from './components/TripCreationModal';
 import { VersionDiffModal } from './components/VersionDiffModal';
 import { BlockExplorerModal } from './components/BlockExplorerModal';
+import FAQSection from './components/FAQSection';
 
 export const App: React.FC = () => {
   // Application State
@@ -516,13 +517,16 @@ export const App: React.FC = () => {
     return (
       <div className="min-h-screen bg-[#0a0d14] flex flex-col items-center justify-center p-4">
         <div className="flex flex-col items-center space-y-4 max-w-sm text-center">
-          <div className="relative flex items-center justify-center w-16 h-16 rounded-2xl bg-indigo-600/20 border border-indigo-500/40 shadow-glow-indigo">
-            <div className="animate-spin w-8 h-8 rounded-full border-2 border-indigo-400 border-t-transparent" />
+          <div className="relative flex items-center justify-center w-16 h-16 rounded-2xl bg-indigo-600/20 border border-indigo-500/40 shadow-glow-indigo overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-[slideShimmer_1.5s_infinite]" />
+            <div className="animate-spin w-8 h-8 rounded-full border-2 border-indigo-400 border-t-transparent relative z-10" />
           </div>
-          <h2 className="text-xl font-bold text-white">Initializing TripChain Protocol</h2>
-          <p className="text-xs text-slate-400">
-            Synthesizing initial 3-day AI itinerary, computing canonical hashes, and preparing on-chain consensus state...
-          </p>
+          <h2 className="text-xl font-bold text-white animate-pulse">Initializing TripChain Protocol</h2>
+          <div className="text-xs text-slate-400 space-y-1.5">
+            <p className="animate-pulse">1. Synthesizing initial 3-day AI itinerary...</p>
+            <p className="animate-pulse" style={{ animationDelay: '0.2s' }}>2. Computing canonical hashes...</p>
+            <p className="animate-pulse" style={{ animationDelay: '0.4s' }}>3. Preparing on-chain consensus state...</p>
+          </div>
         </div>
       </div>
     );
@@ -620,6 +624,9 @@ export const App: React.FC = () => {
           onPayShare={handlePayShare}
           isPayingShare={isPayingShare}
         />
+
+        {/* Technical Architecture & FAQ */}
+        <FAQSection />
 
         {/* On-Chain Verification Section (Anchored with id for smooth scrolling) */}
         <div id="on-chain-section">
